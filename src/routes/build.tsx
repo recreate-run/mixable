@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState, useRef } from 'react'
-import { Sparkles, Check, Loader2, Zap, User, Code2, FileCode2, Layers } from 'lucide-react'
+import { Sparkles, Check, Loader2, Zap, User, Code2, FileCode2, Layers, Send } from 'lucide-react'
 import { Button } from '../components/ui/button'
+import { Textarea } from '../components/ui/textarea'
 
 export const Route = createFileRoute('/build')({
   component: BuildPage,
@@ -33,6 +34,7 @@ function BuildPage() {
   const navigate = useNavigate()
   const [messages, setMessages] = useState<StreamMessage[]>([])
   const [isComplete, setIsComplete] = useState(false)
+  const [chatInput, setChatInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -160,6 +162,26 @@ function BuildPage() {
               </div>
             ))}
             <div ref={messagesEndRef} />
+          </div>
+
+          {/* Chat Input */}
+          <div className="p-4 border-t border-border bg-card/30">
+            <div className="flex gap-2 items-end">
+              <Textarea
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Send a message..."
+                className="min-h-[60px] border-0 focus-visible:ring-0 resize-none text-sm bg-muted/50 placeholder:text-muted-foreground"
+                disabled={!isComplete}
+              />
+              <Button
+                size="icon"
+                disabled={!chatInput.trim() || !isComplete}
+                className="rounded-full h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90 flex-shrink-0"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
 
