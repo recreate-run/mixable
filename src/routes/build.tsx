@@ -165,19 +165,18 @@ function BuildPage() {
           </div>
 
           {/* Chat Input */}
-          <div className="p-4 border-t border-border bg-card/30">
+          <div className="p-4 border-t border-border">
             <div className="flex gap-2 items-end">
               <Textarea
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Send a message..."
-                className="min-h-[60px] border-0 focus-visible:ring-0 resize-none text-sm bg-muted/50 placeholder:text-muted-foreground"
                 disabled={!isComplete}
               />
               <Button
                 size="icon"
                 disabled={!chatInput.trim() || !isComplete}
-                className="rounded-full h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90 flex-shrink-0"
+                className="rounded-full flex-shrink-0"
               >
                 <Send className="w-4 h-4" />
               </Button>
