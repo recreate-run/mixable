@@ -2,11 +2,11 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 
 [build]
-  # Build command to run (includes index.html generation for static deployment)
-  command = "bun run build:netlify"
+  # Build command to run
+  command = "bun run build"
 
-  # Directory to publish (TanStack Start outputs to dist/client for static assets)
-  publish = "dist/client"
+  # Directory to publish (standard Vite output)
+  publish = "dist"
 
   # Node.js version
   [build.environment]
@@ -40,12 +40,12 @@
 
 # Production context settings
 [context.production]
-  command = "bun run build:netlify"
+  command = "bun run build"
 
 # Deploy preview settings
 [context.deploy-preview]
-  command = "bun run build:netlify"
+  command = "bun run build"
 
 # Branch deploy settings
 [context.branch-deploy]
-  command = "bun run build:netlify"
+  command = "bun run build"
