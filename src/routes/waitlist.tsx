@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
-import { Zap, Sparkles, CheckCircle2, Loader2 } from 'lucide-react'
+import { Zap, CheckCircle2, Loader2 } from 'lucide-react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 export const Route = createFileRoute('/waitlist')({ component: WaitlistPage })
@@ -57,151 +57,121 @@ function WaitlistPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-semibold text-foreground">Mixable</h1>
-            <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium">
-              Powered by Mix
-            </span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <div className="w-full max-w-2xl space-y-8">
-          {/* Hero Text */}
-          <div className="text-center space-y-4 mb-12">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-primary" />
+    <div className="min-h-screen bg-background flex items-center justify-center p-6 md:p-12">
+      <div className="w-full max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          {/* Left Column - Form */}
+          <div className="order-2 lg:order-1 space-y-8">
+            {/* Branding */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <h1 className="text-2xl font-semibold text-foreground tracking-tight">Mixable</h1>
               </div>
-            </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-              <Sparkles className="w-4 h-4" />
-              AI-Native Apps • Powered by Mix
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight">
-              Build AI-Native Apps
-              <br />
-              <span className="text-primary">From a Single Prompt</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The world is changing. Launch your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
-            </p>
-          </div>
-
-          {/* Success State */}
-          {isSuccess && (
-            <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <CheckCircle2 className="w-12 h-12 text-green-600 mx-auto mb-3" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                You're on the list!
-              </h3>
-              <p className="text-muted-foreground">
-                We'll notify you as soon as Mixable launches. Get ready to build AI-native apps without code.
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Powered by Mix • AI-Native Apps
               </p>
             </div>
-          )}
 
-          {/* Waitlist Form */}
-          {!isSuccess && (
-            <div className="space-y-6">
-              <form onSubmit={handleSubmit} className="relative">
-                <div className="bg-card rounded-2xl shadow-md border border-border p-6">
-                  <h3 className="text-2xl font-bold text-foreground mb-2">
-                    Join the Waitlist
-                  </h3>
-                  <p className="text-muted-foreground mb-6">
-                    Be the first to build AI-native apps with Mix. Get early access when we launch.
-                  </p>
-
-                  <div className="space-y-4">
-                    <div>
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
-                        disabled={isSubmitting}
-                        className="text-base h-12"
-                        autoFocus
-                      />
-                      {error && (
-                        <p className="text-sm text-destructive mt-2">{error}</p>
-                      )}
-                    </div>
-
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting || !email.trim()}
-                      className="w-full h-12 text-base"
-                      size="lg"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Joining...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="w-4 h-4 mr-2" />
-                          Join Waitlist
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </form>
-
-              {/* Features */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  {
-                    icon: '🤖',
-                    title: 'Multimodal AI',
-                    description: 'Video, audio, PDF analysis with Gemini + Claude',
-                  },
-                  {
-                    icon: '🚀',
-                    title: 'Production Ready',
-                    description: 'Cloud-native infrastructure, not localhost toys',
-                  },
-                  {
-                    icon: '⚡',
-                    title: 'No Loops',
-                    description: 'Direct to code, skip endless iterations',
-                  },
-                ].map((feature, i) => (
-                  <div
-                    key={i}
-                    className="bg-card rounded-xl border border-border p-4 text-center"
-                  >
-                    <div className="text-3xl mb-2">{feature.icon}</div>
-                    <h4 className="font-semibold text-foreground mb-1">
-                      {feature.title}
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      {feature.description}
+            {/* Success State */}
+            {isSuccess && (
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 p-8 bg-primary/5 rounded-2xl border border-primary/20">
+                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      You're on the list
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      We'll notify you as soon as Mixable launches. Get ready to build AI-native apps without code.
                     </p>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </main>
+            )}
 
-      {/* Footer */}
-      <footer className="py-4 text-center text-xs text-muted-foreground border-t border-border">
-        Build AI-Native Apps • Powered by Mix • No Loops, Just Results
-      </footer>
+            {/* Form */}
+            {!isSuccess && (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={isSubmitting}
+                      className="h-14 text-base bg-card border-border"
+                      autoFocus
+                    />
+                    {error && (
+                      <p className="text-sm text-destructive">{error}</p>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting || !email.trim()}
+                    className="w-full h-14 text-base"
+                    size="lg"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Joining
+                      </>
+                    ) : (
+                      'Join Waitlist'
+                    )}
+                  </Button>
+                </div>
+              </form>
+            )}
+
+            {/* Features */}
+            {!isSuccess && (
+              <div className="space-y-4 pt-4">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Multimodal AI with video, audio, and PDF analysis
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Production-ready cloud infrastructure
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Direct to code, no endless iterations
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column - Hero */}
+          <div className="order-1 lg:order-2 space-y-8">
+            <div className="space-y-6">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight leading-[1.1]">
+                Build AI-Native Apps
+                <br />
+                <span className="text-primary">From a Prompt</span>
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
+                Launch your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
