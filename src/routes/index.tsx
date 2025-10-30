@@ -316,15 +316,7 @@ function LandingPage() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-semibold text-foreground">Mixable</h1>
-            <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium">
-              No Loops
-            </span>
-          </div>
+          <h1 className="text-xl font-semibold text-foreground">Nova</h1>
         </div>
       </header>
 

@@ -64,12 +64,7 @@ function WaitlistPage() {
           <div className="order-2 lg:order-1 space-y-8">
             {/* Branding */}
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <h1 className="text-2xl font-semibold text-foreground tracking-tight">Mixable</h1>
-              </div>
+              <h1 className="text-2xl font-semibold text-foreground tracking-tight">Nova</h1>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Powered by Mix • AI-Native Apps
               </p>
@@ -85,7 +80,7 @@ function WaitlistPage() {
                       You're on the list
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      We'll notify you as soon as Mixable launches. Get ready to build AI-native apps without code.
+                      We'll notify you as soon as Nova launches. Get ready to build AI-native apps without code.
                     </p>
                   </div>
                 </div>
