@@ -184,11 +184,11 @@ function BuildPage() {
           </div>
         </div>
 
-        {/* Right Panel - Loading State (70%) */}
-        <div className="w-[70%] bg-muted/30 flex flex-col items-center justify-center p-8">
-          <div className="text-center space-y-6">
-            {!isComplete ? (
-              <>
+        {/* Right Panel - Loading State / Preview (70%) */}
+        <div className="w-[70%] bg-muted/30 flex flex-col">
+          {!isComplete ? (
+            <div className="flex-1 flex items-center justify-center p-8">
+              <div className="text-center space-y-6">
                 <div className="relative">
                   <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                     <Loader2 className="w-10 h-10 text-primary animate-spin" />
@@ -212,28 +212,38 @@ function BuildPage() {
                     <span>No loops detected ✓</span>
                   </div>
                 </div>
-              </>
-            ) : (
-              <>
-                <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mx-auto">
-                  <Check className="w-10 h-10 text-green-600" />
+              </div>
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col">
+              {/* Preview Header */}
+              <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-lg">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span className="text-xs font-medium text-muted-foreground">Live Preview</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">localhost:3001</span>
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-foreground">All done!</h3>
-                  <p className="text-sm text-muted-foreground">Your app is ready to deploy</p>
-                </div>
-                <div className="space-y-2 w-full mt-8">
-                  <Button className="w-full" size="lg">
-                    <Zap className="w-4 h-4 mr-2" />
-                    Deploy Now
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm">
+                    <Zap className="w-3 h-3 mr-1.5" />
+                    Deploy
                   </Button>
-                  <Button variant="outline" className="w-full" size="lg">
-                    Download Code
-                  </Button>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+
+              {/* Preview iframe */}
+              <div className="flex-1 bg-white">
+                <iframe
+                  src="http://localhost:3001"
+                  className="w-full h-full border-0"
+                  title="App Preview"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
