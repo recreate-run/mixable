@@ -82,6 +82,8 @@ function BuildPage() {
       return
     }
 
+    const timeoutIds: NodeJS.Timeout[] = []
+
     // Determine which building steps to use based on prompt
     const isYoutubeShortsApp = prompt.toLowerCase().includes('youtube') ||
                                prompt.toLowerCase().includes('shorts') ||
@@ -104,7 +106,7 @@ function BuildPage() {
     ])
 
     // Add initial response
-    setTimeout(() => {
+    timeoutIds.push(setTimeout(() => {
       setMessages((prev) => [
         ...prev,
         {
@@ -113,13 +115,13 @@ function BuildPage() {
           timestamp: Date.now(),
         },
       ])
-    }, 500)
+    }, 500))
 
     // Add building steps as messages
     let totalDelay = 1200
     buildingSteps.forEach((step, index) => {
       totalDelay += step.delay
-      setTimeout(() => {
+      timeoutIds.push(setTimeout(() => {
         setMessages((prev) => [
           ...prev,
           {
@@ -128,11 +130,11 @@ function BuildPage() {
             timestamp: Date.now(),
           },
         ])
-      }, totalDelay)
+      }, totalDelay))
     })
 
     // Complete
-    setTimeout(() => {
+    timeoutIds.push(setTimeout(() => {
       setIsComplete(true)
       setMessages((prev) => [
         ...prev,
@@ -142,8 +144,13 @@ function BuildPage() {
           timestamp: Date.now(),
         },
       ])
-    }, totalDelay + 1000)
-  }, [prompt, navigate])
+    }, totalDelay + 1000))
+
+    // Cleanup function to clear all timeouts
+    return () => {
+      timeoutIds.forEach(id => clearTimeout(id))
+    }
+  }, [prompt, plan, navigate])
 
   return (
     <div className="h-screen flex flex-col bg-background">
