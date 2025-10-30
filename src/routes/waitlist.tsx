@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Zap, Sparkles, CheckCircle2, Loader2 } from 'lucide-react'
-import { supabase } from '../lib/supabase'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 export const Route = createFileRoute('/waitlist')({ component: WaitlistPage })
 
@@ -12,6 +12,11 @@ function WaitlistPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
+
+  // Show configuration error if Supabase is not set up
+  if (!isSupabaseConfigured) {
+    console.error('Supabase environment variables are not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment.')
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
