@@ -64,7 +64,7 @@ function WaitlistPage() {
           <div className="order-2 lg:order-1 space-y-8">
             {/* Branding */}
             <div className="space-y-3">
-              <h1 className="text-2xl font-semibold text-foreground tracking-tight">Nova</h1>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary to-primary/60 bg-clip-text text-transparent tracking-tight">Nova</h1>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Powered by Mix • AI-Native Apps
               </p>

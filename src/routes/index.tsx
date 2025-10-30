@@ -316,7 +316,7 @@ function LandingPage() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
-          <h1 className="text-xl font-semibold text-foreground">Nova</h1>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-primary via-primary to-primary/60 bg-clip-text text-transparent">Nova</h1>
         </div>
       </header>
 
