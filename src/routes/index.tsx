@@ -50,6 +50,129 @@ I'll create your application with a clean, modern design using React and Tailwin
 ## Estimated Build Time
 This will take approximately 3-5 minutes to complete.`
 
+const youtubeShortssPlanContent = `# Build Plan: AI YouTube Shorts Generator
+
+## Overview
+I'll create an AI-powered application that converts YouTube videos into viral-worthy short-form content. Users paste a YouTube URL, and the AI analyzes the video to create 3 optimized shorts with title animations, captions, and trending styles.
+
+## Core Features to Build
+
+### 1. Video Input Interface
+- Clean, minimal home page design
+- YouTube URL input field with validation
+- Real-time URL parsing and preview
+- Submit button with loading states
+- Error handling for invalid URLs
+
+### 2. AI Video Analysis Engine
+- **ReadMedia Tool**: Extract video content using Gemini Vision
+- **Scene Detection**: Identify key moments and transitions
+- **Viral Moment Detection**: Use Claude to analyze engagement potential
+- **Audio Analysis**: Transcribe speech and identify soundbites
+- **Emotional Analysis**: Detect high-energy or emotional moments
+
+### 3. Shorts Generation
+- Extract 3 optimal clips (15-30 seconds each)
+- **Short #1**: Attention-grabbing hook moment
+- **Short #2**: Value/insight delivery
+- **Short #3**: Call-to-action or payoff
+- Automatic clip trimming and optimization
+
+### 4. Title Animation & Styling
+- **GSAP Animations**: Dynamic title overlays
+- Trending text styles (bold, colorful, animated)
+- Auto-generated captions with perfect timing
+- Music/sound suggestions for each clip
+- Thumbnail generation with key frames
+
+### 5. Results Gallery
+- Grid display of 3 generated shorts
+- Video preview for each short
+- Download buttons (MP4 format)
+- Share to social media options
+- Regenerate individual shorts option
+
+## AI Capabilities Powered by Mix
+
+### Multi-Model Routing
+- **Gemini**: Video analysis and scene detection
+- **Claude**: Viral moment identification and script writing
+- **GSAP**: Animation generation for overlays
+
+### Multimodal Processing
+- Video frame analysis
+- Audio transcription and analysis
+- Visual scene understanding
+- Text overlay generation
+
+### Real-Time Streaming
+- Progress updates during video analysis
+- Live preview of detected moments
+- Streaming generation status
+
+## Technical Stack
+
+### Frontend
+- **Framework**: React 19 with TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui
+- **Animations**: Framer Motion
+- **Video Player**: React Player
+
+### Backend (Mix Integration)
+- **AI Agent**: Mix multimodal agent
+- **Video Processing**: FFmpeg integration
+- **Storage**: Temporary file storage
+- **API**: RESTful endpoints
+
+### AI Tools Used
+- ReadMedia (video + audio analysis)
+- Python Execution (video editing with FFmpeg)
+- Web Search (trending music and styles)
+- GSAP (title animations)
+
+## Implementation Steps
+
+### Phase 1: Frontend UI (20 minutes)
+1. Create modern landing page with gradient backgrounds
+2. Build YouTube URL input with validation
+3. Add loading animations and progress indicators
+4. Design results gallery grid layout
+5. Implement video preview components
+
+### Phase 2: Mix Agent Integration (30 minutes)
+1. Set up Mix session creation
+2. Configure ReadMedia tool for video analysis
+3. Implement streaming progress updates
+4. Add error handling and retries
+5. Connect to Mix backend API
+
+### Phase 3: AI Analysis Pipeline (45 minutes)
+1. Send video to Gemini for scene detection
+2. Extract audio transcription
+3. Use Claude to identify viral moments
+4. Score and rank potential short clips
+5. Select top 3 clips based on AI scoring
+
+### Phase 4: Shorts Generation (40 minutes)
+1. Extract video clips using FFmpeg
+2. Generate title animations with GSAP
+3. Add auto-captions with perfect timing
+4. Create thumbnails from key frames
+5. Suggest trending music for each clip
+
+### Phase 5: Results Display (15 minutes)
+1. Display 3 generated shorts in grid
+2. Add video preview with controls
+3. Implement download functionality
+4. Add share to TikTok/YouTube buttons
+5. Polish loading states and animations
+
+## Estimated Build Time
+**Total: ~2.5 hours**
+
+This is a production-ready AI-native app that showcases Mix's multimodal capabilities and demonstrates the future of content creation tools.`
+
 const caloriePlanContent = `# Build Plan: Calorie Tracking App
 
 ## Overview
@@ -154,11 +277,16 @@ function LandingPage() {
   const navigate = useNavigate()
 
   // Determine which plan to show based on input
+  const isYoutubeShortsApp = input.toLowerCase().includes('youtube') ||
+                             input.toLowerCase().includes('shorts') ||
+                             input.toLowerCase().includes('viral') ||
+                             input.toLowerCase().includes('video')
   const isCalorieApp = input.toLowerCase().includes('calorie') ||
                        input.toLowerCase().includes('food') ||
                        input.toLowerCase().includes('nutrition') ||
                        input.toLowerCase().includes('meal')
-  const planContent = isCalorieApp ? caloriePlanContent : genericPlanContent
+  const planContent = isYoutubeShortsApp ? youtubeShortssPlanContent :
+                      isCalorieApp ? caloriePlanContent : genericPlanContent
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -205,14 +333,32 @@ function LandingPage() {
         <div className="w-full max-w-3xl space-y-8">
           {/* Hero Text */}
           <div className="text-center space-y-4 mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+              <Sparkles className="w-4 h-4" />
+              Powered by Mix
+            </div>
             <h2 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight">
-              Create apps and websites
+              Build AI-Native Apps
               <br />
-              <span className="text-primary">by chatting with AI</span>
+              <span className="text-primary">From a Single Prompt</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              No agentic loops. No endless iterations. Just direct, fast results.
+              The world is changing. Start your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
             </p>
+            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground pt-2">
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Multi-model routing</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Production-ready</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>No agentic loops</span>
+              </div>
+            </div>
           </div>
 
           {/* Input Card - Exact Lovable Style */}
@@ -352,15 +498,16 @@ function LandingPage() {
           {/* Example Prompts */}
           <div className="flex flex-wrap gap-2 justify-center">
             {[
+              'YouTube shorts generator',
               'Calorie tracker app',
               'Todo app with dark mode',
-              'E-commerce storefront',
               'Analytics dashboard',
             ].map((example) => (
               <button
                 key={example}
                 onClick={() => setInput(example)}
                 className="text-sm px-4 py-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
+                disabled={isGeneratingPlan || showPlan}
               >
                 {example}
               </button>
@@ -371,7 +518,7 @@ function LandingPage() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-muted-foreground border-t border-border">
-        Direct to code, skip the loops • Powered by Mix
+        Build AI-Native Apps • Powered by Mix • No Loops, Just Results
       </footer>
     </div>
   )

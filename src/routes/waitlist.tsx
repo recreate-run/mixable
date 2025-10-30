@@ -67,7 +67,7 @@ function WaitlistPage() {
             </div>
             <h1 className="text-xl font-semibold text-foreground">Mixable</h1>
             <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium">
-              No Loops
+              Powered by Mix
             </span>
           </div>
         </div>
@@ -83,13 +83,17 @@ function WaitlistPage() {
                 <Sparkles className="w-8 h-8 text-primary" />
               </div>
             </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+              <Sparkles className="w-4 h-4" />
+              AI-Native Apps • Powered by Mix
+            </div>
             <h2 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight">
-              Create apps and websites
+              Build AI-Native Apps
               <br />
-              <span className="text-primary">by chatting with AI</span>
+              <span className="text-primary">From a Single Prompt</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              No agentic loops. No endless iterations. Just direct, fast results.
+              The world is changing. Launch your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
             </p>
           </div>
 
@@ -101,7 +105,7 @@ function WaitlistPage() {
                 You're on the list!
               </h3>
               <p className="text-muted-foreground">
-                We'll notify you as soon as Mixable launches. Get ready for a better way to build.
+                We'll notify you as soon as Mixable launches. Get ready to build AI-native apps without code.
               </p>
             </div>
           )}
@@ -115,7 +119,7 @@ function WaitlistPage() {
                     Join the Waitlist
                   </h3>
                   <p className="text-muted-foreground mb-6">
-                    Be the first to experience building without loops. We're launching soon.
+                    Be the first to build AI-native apps with Mix. Get early access when we launch.
                   </p>
 
                   <div className="space-y-4">
@@ -160,22 +164,26 @@ function WaitlistPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                   {
+                    icon: '🤖',
+                    title: 'Multimodal AI',
+                    description: 'Video, audio, PDF analysis with Gemini + Claude',
+                  },
+                  {
+                    icon: '🚀',
+                    title: 'Production Ready',
+                    description: 'Cloud-native infrastructure, not localhost toys',
+                  },
+                  {
+                    icon: '⚡',
                     title: 'No Loops',
-                    description: 'Direct path from idea to code, no endless iterations',
-                  },
-                  {
-                    title: 'Fast Results',
-                    description: 'Get your app built in minutes, not hours',
-                  },
-                  {
-                    title: 'AI Powered',
-                    description: 'Advanced AI that understands what you want',
+                    description: 'Direct to code, skip endless iterations',
                   },
                 ].map((feature, i) => (
                   <div
                     key={i}
                     className="bg-card rounded-xl border border-border p-4 text-center"
                   >
+                    <div className="text-3xl mb-2">{feature.icon}</div>
                     <h4 className="font-semibold text-foreground mb-1">
                       {feature.title}
                     </h4>
@@ -192,7 +200,7 @@ function WaitlistPage() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-muted-foreground border-t border-border">
-        Direct to code, skip the loops • Powered by Mix
+        Build AI-Native Apps • Powered by Mix • No Loops, Just Results
       </footer>
     </div>
   )

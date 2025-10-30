@@ -29,6 +29,26 @@ const genericBuildingSteps = [
   { text: 'Optimizing and finalizing the build...', delay: 900 },
 ]
 
+const youtubeShortsSteps = [
+  { text: '🤔 Understanding your requirements...', delay: 800 },
+  { text: '✅ AI app architecture designed', delay: 1000 },
+  { text: '📦 Setting up Mix agent with multimodal capabilities...', delay: 1200 },
+  { text: '✅ Agent configured with ReadMedia tool', delay: 900 },
+  { text: '🎨 Creating frontend UI with video input...', delay: 1300 },
+  { text: '✅ YouTube URL parser ready', delay: 1000 },
+  { text: '✅ Results gallery component created', delay: 1100 },
+  { text: '🧠 Implementing AI video analysis...', delay: 1400 },
+  { text: '✅ Gemini integration for scene detection', delay: 1200 },
+  { text: '✅ Claude integration for viral moment identification', delay: 1300 },
+  { text: '✅ FFmpeg video processing configured', delay: 1000 },
+  { text: '🎬 Setting up GSAP animations for title overlays...', delay: 1100 },
+  { text: '✅ Animation engine ready', delay: 900 },
+  { text: '🚀 Deploying your AI app...', delay: 1200 },
+  { text: '✅ Backend deployed', delay: 800 },
+  { text: '✅ Frontend deployed', delay: 800 },
+  { text: '🎉 Your AI-native app is ready!', delay: 1000 },
+]
+
 const calorieBuildingSteps = [
   { text: 'Setting up Go backend with SQLite database...', delay: 800 },
   { text: 'Creating calorie entries data model...', delay: 1200 },
@@ -63,11 +83,16 @@ function BuildPage() {
     }
 
     // Determine which building steps to use based on prompt
+    const isYoutubeShortsApp = prompt.toLowerCase().includes('youtube') ||
+                               prompt.toLowerCase().includes('shorts') ||
+                               prompt.toLowerCase().includes('viral') ||
+                               prompt.toLowerCase().includes('video')
     const isCalorieApp = prompt.toLowerCase().includes('calorie') ||
                          prompt.toLowerCase().includes('food') ||
                          prompt.toLowerCase().includes('nutrition') ||
                          prompt.toLowerCase().includes('meal')
-    const buildingSteps = isCalorieApp ? calorieBuildingSteps : genericBuildingSteps
+    const buildingSteps = isYoutubeShortsApp ? youtubeShortsSteps :
+                          isCalorieApp ? calorieBuildingSteps : genericBuildingSteps
 
     // Add user message with plan
     setMessages([
