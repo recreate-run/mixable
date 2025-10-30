@@ -1,10 +1,18 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { Textarea } from '../components/ui/textarea'
 import { Zap, Sparkles, Send, Plus, Paperclip, Globe, AudioWaveform, ArrowUp, X, CheckCircle2 } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: LandingPage })
+export const Route = createFileRoute('/')({
+  component: LandingPage,
+  beforeLoad: () => {
+    // Redirect to waitlist in production
+    if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+      throw redirect({ to: '/waitlist' })
+    }
+  }
+})
 
 const genericPlanContent = `# Build Plan
 
