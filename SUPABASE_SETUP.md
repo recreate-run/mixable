@@ -33,13 +33,55 @@ Visit `http://localhost:3000/waitlist` and submit an email to test.
 
 Deploy to your preferred platform:
 
-#### Cloudflare Pages:
+### Cloudflare Workers (Recommended)
+
+The project is configured for Cloudflare Workers deployment using Wrangler.
+
+#### Initial Deployment
+
 ```bash
-bun run build
-# Follow Cloudflare Pages deployment instructions
+bun run deploy
 ```
 
-#### Vercel:
+#### Add Environment Variables
+
+After deploying, you MUST add the Supabase environment variables to Cloudflare Workers:
+
+**Option 1: Via Cloudflare Dashboard (Recommended)**
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Navigate to Workers & Pages
+3. Click on your worker (e.g., `mixable`)
+4. Go to Settings → Variables
+5. Click "Add variable" and add:
+   - Name: `VITE_SUPABASE_URL`
+   - Value: `https://zkkcbicpsqjmticgfumr.supabase.co`
+   - Click "Save"
+6. Click "Add variable" again and add:
+   - Name: `VITE_SUPABASE_ANON_KEY`
+   - Value: Your Supabase anon key
+   - Click "Save"
+7. Click "Save and deploy" to apply changes
+
+**Option 2: Via Wrangler CLI**
+
+```bash
+# Add environment variables via wrangler
+wrangler secret put VITE_SUPABASE_URL
+# Paste: https://zkkcbicpsqjmticgfumr.supabase.co
+
+wrangler secret put VITE_SUPABASE_ANON_KEY
+# Paste: your-anon-key
+```
+
+**Important Notes:**
+- Without these environment variables, the waitlist page will show an error
+- Environment variables must be prefixed with `VITE_` to be available in the client
+- After adding variables, your worker will automatically redeploy
+- The production site will redirect to `/waitlist` automatically
+
+### Vercel
+
 ```bash
 vercel deploy
 ```
