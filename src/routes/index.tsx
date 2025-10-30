@@ -6,9 +6,11 @@ import { Zap, Sparkles, Send, Plus, Paperclip, Globe, AudioWaveform, ArrowUp, X,
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
-  beforeLoad: () => {
-    // Redirect to waitlist in production
-    if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+  beforeLoad: ({ location }) => {
+    // Redirect to waitlist in production (not on localhost)
+    const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+
+    if (!isLocalhost) {
       throw redirect({ to: '/waitlist' })
     }
   }
