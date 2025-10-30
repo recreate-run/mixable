@@ -343,7 +343,7 @@ function LandingPage() {
               <span className="text-primary">From a Single Prompt</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The world is changing. Start your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
+              {/* The world is changing. Start your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes. */}
             </p>
             <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground pt-2">
               <div className="flex items-center gap-1">

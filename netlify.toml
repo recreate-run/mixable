@@ -1,0 +1,51 @@
+# Netlify Configuration for Mixable Waitlist
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Build command to run (includes index.html generation for static deployment)
+  command = "bun run build:netlify"
+
+  # Directory to publish (TanStack Start outputs to dist/client for static assets)
+  publish = "dist/client"
+
+  # Node.js version
+  [build.environment]
+    NODE_VERSION = "20"
+
+# Redirect rules for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Environment variables (set these in Netlify dashboard for security)
+# VITE_SUPABASE_URL - Your Supabase project URL
+# VITE_SUPABASE_ANON_KEY - Your Supabase anonymous key
+
+# Production context settings
+[context.production]
+  command = "bun run build:netlify"
+
+# Deploy preview settings
+[context.deploy-preview]
+  command = "bun run build:netlify"
+
+# Branch deploy settings
+[context.branch-deploy]
+  command = "bun run build:netlify"

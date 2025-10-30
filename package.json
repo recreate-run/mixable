@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
+    "build:netlify": "vite build && node scripts/generate-index.js",
     "serve": "vite preview",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types",
