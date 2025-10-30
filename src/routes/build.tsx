@@ -20,13 +20,24 @@ interface StreamMessage {
   timestamp: number
 }
 
-const buildingSteps = [
+const genericBuildingSteps = [
   { text: 'Analyzing your requirements...', delay: 800 },
   { text: 'Designing the UI architecture...', delay: 1200 },
   { text: 'Generating React components...', delay: 1500 },
   { text: 'Setting up routing and navigation...', delay: 1100 },
   { text: 'Adding interactivity and state management...', delay: 1300 },
   { text: 'Optimizing and finalizing the build...', delay: 900 },
+]
+
+const calorieBuildingSteps = [
+  { text: 'Setting up Go backend with SQLite database...', delay: 800 },
+  { text: 'Creating calorie entries data model...', delay: 1200 },
+  { text: 'Building daily progress tracker component...', delay: 1400 },
+  { text: 'Implementing add/edit/delete entry forms...', delay: 1100 },
+  { text: 'Creating history view with date picker...', delay: 1300 },
+  { text: 'Adding settings page for daily goal...', delay: 900 },
+  { text: 'Connecting TanStack Query hooks to API...', delay: 1000 },
+  { text: 'Finalizing shadcn UI styling and responsiveness...', delay: 800 },
 ]
 
 function BuildPage() {
@@ -50,6 +61,13 @@ function BuildPage() {
       navigate({ to: '/' })
       return
     }
+
+    // Determine which building steps to use based on prompt
+    const isCalorieApp = prompt.toLowerCase().includes('calorie') ||
+                         prompt.toLowerCase().includes('food') ||
+                         prompt.toLowerCase().includes('nutrition') ||
+                         prompt.toLowerCase().includes('meal')
+    const buildingSteps = isCalorieApp ? calorieBuildingSteps : genericBuildingSteps
 
     // Add user message with plan
     setMessages([

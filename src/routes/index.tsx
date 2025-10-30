@@ -6,7 +6,7 @@ import { Zap, Sparkles, Send, Plus, Paperclip, Globe, AudioWaveform, ArrowUp, X,
 
 export const Route = createFileRoute('/')({ component: LandingPage })
 
-const planContent = `# Build Plan
+const genericPlanContent = `# Build Plan
 
 ## Overview
 I'll create your application with a clean, modern design using React and Tailwind CSS.
@@ -42,11 +42,115 @@ I'll create your application with a clean, modern design using React and Tailwin
 ## Estimated Build Time
 This will take approximately 3-5 minutes to complete.`
 
+const caloriePlanContent = `# Build Plan: Calorie Tracking App
+
+## Overview
+I'll create a comprehensive calorie tracking application with React, TanStack Start, and a Go backend. Users can log meals, track their daily intake, view history, and set personalized goals.
+
+## Core Features to Build
+
+### 1. Daily Calorie Dashboard
+- Real-time progress bar showing calories consumed vs. daily goal
+- Today's date and total calories display
+- Visual progress indicator with color coding
+- Quick-add button for new entries
+
+### 2. Food Entry Management
+- Add new food entries with name and calorie count
+- Edit existing entries
+- Delete entries with confirmation
+- Timestamp tracking for each entry
+- Entry cards showing food name, calories, and time
+
+### 3. History View
+- Calendar-style date picker
+- View entries from any past date
+- Daily summaries with total calories
+- Searchable entry history
+- Date range filtering
+
+### 4. Settings & Goals
+- Set daily calorie goal
+- Customize calorie targets
+- Anonymous authentication with localStorage
+- User preferences persistence
+
+### 5. Backend API (Go)
+- RESTful API endpoints for CRUD operations
+- SQLite database with migrations
+- JSON-based user data storage
+- Authentication middleware
+- CORS configuration for local development
+
+## Technical Stack
+
+### Frontend
+- **Framework**: TanStack Start (React 19)
+- **Routing**: TanStack Router
+- **State**: TanStack Query for server state
+- **UI**: shadcn/ui components
+- **Styling**: Tailwind CSS v4
+
+### Backend
+- **Language**: Go (net/http)
+- **Database**: SQLite with goose migrations
+- **Query Builder**: sqlc for type-safe queries
+- **Auth**: Anonymous sessions via localStorage
+
+## Implementation Steps
+
+### Phase 1: Backend Setup (30 minutes)
+1. Initialize Go project structure
+2. Set up SQLite database with goose migrations
+3. Create users table with app_data JSON column
+4. Implement CRUD endpoints for entries
+5. Add settings endpoint for daily goal
+6. Configure CORS for localhost:3000
+
+### Phase 2: Frontend Foundation (45 minutes)
+1. Set up TanStack Start project
+2. Configure TanStack Router with routes
+3. Install shadcn/ui components
+4. Set up TanStack Query client
+5. Implement API client with fetchWithAuth
+
+### Phase 3: Core Features (1 hour)
+1. Build DailyProgress component with progress bar
+2. Create EntryForm dialog for add/edit
+3. Implement EntryList with cards
+4. Build EntryCard with edit/delete actions
+5. Add AddEntryButton component
+
+### Phase 4: History & Settings (30 minutes)
+1. Build history page with date picker
+2. Add date range filtering
+3. Create settings form for daily goal
+4. Implement anonymous auth flow
+
+### Phase 5: Polish & Testing (15 minutes)
+1. Add loading states
+2. Implement error handling with toasts
+3. Add empty states
+4. Test all CRUD operations
+5. Verify mobile responsiveness
+
+## Estimated Build Time
+**Total: ~2.5 hours**
+
+This is a production-ready calorie tracking app with full CRUD functionality, history tracking, and goal management.`
+
 function LandingPage() {
   const [input, setInput] = useState('')
   const [showPlan, setShowPlan] = useState(false)
   const [isGeneratingPlan, setIsGeneratingPlan] = useState(false)
   const navigate = useNavigate()
+
+  // Determine which plan to show based on input
+  const isCalorieApp = input.toLowerCase().includes('calorie') ||
+                       input.toLowerCase().includes('food') ||
+                       input.toLowerCase().includes('nutrition') ||
+                       input.toLowerCase().includes('meal')
+  const planContent = isCalorieApp ? caloriePlanContent : genericPlanContent
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -240,10 +344,10 @@ function LandingPage() {
           {/* Example Prompts */}
           <div className="flex flex-wrap gap-2 justify-center">
             {[
+              'Calorie tracker app',
               'Todo app with dark mode',
               'E-commerce storefront',
               'Analytics dashboard',
-              'Blog with CMS',
             ].map((example) => (
               <button
                 key={example}
