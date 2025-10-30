@@ -1,10 +1,35 @@
-Welcome to your new TanStack app! 
+# Mixable
 
-# Getting Started
+Build apps and websites by chatting with AI - No agentic loops, no endless iterations, just direct, fast results.
 
-To run this application:
+## Project Structure
+
+- `/` - Demo landing page with streaming simulation
+- `/build` - Demo build page with fake streaming
+- `/waitlist` - Production waitlist page for email collection
+
+## Getting Started
+
+To run this application locally:
 
 ```bash
+bun install
+bun --bun run start
+```
+
+Visit:
+- `http://localhost:3000` - Demo landing page
+- `http://localhost:3000/waitlist` - Waitlist page
+
+## Waitlist Setup
+
+The waitlist page uses Supabase (PostgreSQL) for storing emails. See [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for detailed setup instructions.
+
+Quick setup:
+```bash
+# 1. Ensure .env file has Supabase credentials (already configured)
+# 2. Create 'waitlist' table in Supabase dashboard
+# 3. Start development
 bun install
 bun --bun run start
 ```
