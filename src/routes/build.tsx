@@ -1,299 +1,205 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState, useRef } from 'react'
-import { Sparkles, Check, Loader2, Zap, User, Code2, FileCode2, Layers, Send } from 'lucide-react'
-import { Button } from '../components/ui/button'
-import { Textarea } from '../components/ui/textarea'
+import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useRef } from 'react'
+import { Sparkles, Loader2, User, Code2, AlertCircle } from 'lucide-react'
+import { useSSE, type SSEMessage } from '@/hooks/useSSE'
+import { apiClient } from '@/lib/api-client'
 
 export const Route = createFileRoute('/build')({
   component: BuildPage,
   validateSearch: (search: Record<string, unknown>) => {
     return {
+      projectId: (search.projectId as string) || '',
       prompt: (search.prompt as string) || '',
-      plan: (search.plan as string) || '',
     }
   },
 })
 
-interface StreamMessage {
-  type: 'user' | 'assistant'
-  content: string
-  timestamp: number
-}
-
-const genericBuildingSteps = [
-  { text: 'Analyzing your requirements...', delay: 800 },
-  { text: 'Designing the UI architecture...', delay: 1200 },
-  { text: 'Generating React components...', delay: 1500 },
-  { text: 'Setting up routing and navigation...', delay: 1100 },
-  { text: 'Adding interactivity and state management...', delay: 1300 },
-  { text: 'Optimizing and finalizing the build...', delay: 900 },
-]
-
-const youtubeShortsSteps = [
-  { text: '🤔 Understanding your requirements...', delay: 800 },
-  { text: '✅ AI app architecture designed', delay: 1000 },
-  { text: '📦 Setting up Mix agent with multimodal capabilities...', delay: 1200 },
-  { text: '✅ Agent configured with ReadMedia tool', delay: 900 },
-  { text: '🎨 Creating frontend UI with video input...', delay: 1300 },
-  { text: '✅ YouTube URL parser ready', delay: 1000 },
-  { text: '✅ Results gallery component created', delay: 1100 },
-  { text: '🧠 Implementing AI video analysis...', delay: 1400 },
-  { text: '✅ Gemini integration for scene detection', delay: 1200 },
-  { text: '✅ Claude integration for viral moment identification', delay: 1300 },
-  { text: '✅ FFmpeg video processing configured', delay: 1000 },
-  { text: '🎬 Setting up GSAP animations for title overlays...', delay: 1100 },
-  { text: '✅ Animation engine ready', delay: 900 },
-  { text: '🚀 Deploying your AI app...', delay: 1200 },
-  { text: '✅ Backend deployed', delay: 800 },
-  { text: '✅ Frontend deployed', delay: 800 },
-  { text: '🎉 Your AI-native app is ready!', delay: 1000 },
-]
-
-const calorieBuildingSteps = [
-  { text: 'Setting up Go backend with SQLite database...', delay: 800 },
-  { text: 'Creating calorie entries data model...', delay: 1200 },
-  { text: 'Building daily progress tracker component...', delay: 1400 },
-  { text: 'Implementing add/edit/delete entry forms...', delay: 1100 },
-  { text: 'Creating history view with date picker...', delay: 1300 },
-  { text: 'Adding settings page for daily goal...', delay: 900 },
-  { text: 'Connecting TanStack Query hooks to API...', delay: 1000 },
-  { text: 'Finalizing shadcn UI styling and responsiveness...', delay: 800 },
-]
-
 function BuildPage() {
-  const { prompt, plan } = Route.useSearch()
-  const navigate = useNavigate()
-  const [messages, setMessages] = useState<StreamMessage[]>([])
-  const [isComplete, setIsComplete] = useState(false)
-  const [chatInput, setChatInput] = useState('')
+  const { projectId, prompt } = Route.useSearch()
+  const { messages, status, error } = useSSE(projectId)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
+  // Auto-scroll to latest message
   useEffect(() => {
-    scrollToBottom()
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  useEffect(() => {
-    if (!prompt) {
-      navigate({ to: '/' })
-      return
-    }
-
-    const timeoutIds: NodeJS.Timeout[] = []
-
-    // Determine which building steps to use based on prompt
-    const isYoutubeShortsApp = prompt.toLowerCase().includes('youtube') ||
-                               prompt.toLowerCase().includes('shorts') ||
-                               prompt.toLowerCase().includes('viral') ||
-                               prompt.toLowerCase().includes('video')
-    const isCalorieApp = prompt.toLowerCase().includes('calorie') ||
-                         prompt.toLowerCase().includes('food') ||
-                         prompt.toLowerCase().includes('nutrition') ||
-                         prompt.toLowerCase().includes('meal')
-    const buildingSteps = isYoutubeShortsApp ? youtubeShortsSteps :
-                          isCalorieApp ? calorieBuildingSteps : genericBuildingSteps
-
-    // Add user message with plan
-    setMessages([
-      {
-        type: 'user',
-        content: plan || prompt,
-        timestamp: Date.now(),
-      },
-    ])
-
-    // Add initial response
-    timeoutIds.push(setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          type: 'assistant',
-          content: "I'll build that for you right away! Starting the process now...",
-          timestamp: Date.now(),
-        },
-      ])
-    }, 500))
-
-    // Add building steps as messages
-    let totalDelay = 1200
-    buildingSteps.forEach((step, index) => {
-      totalDelay += step.delay
-      timeoutIds.push(setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            type: 'assistant',
-            content: step.text,
-            timestamp: Date.now(),
-          },
-        ])
-      }, totalDelay))
-    })
-
-    // Complete
-    timeoutIds.push(setTimeout(() => {
-      setIsComplete(true)
-      setMessages((prev) => [
-        ...prev,
-        {
-          type: 'assistant',
-          content: '✓ Your app is ready! All components have been generated successfully. No loops encountered during the build process.',
-          timestamp: Date.now(),
-        },
-      ])
-    }, totalDelay + 1000))
-
-    // Cleanup function to clear all timeouts
-    return () => {
-      timeoutIds.forEach(id => clearTimeout(id))
-    }
-  }, [prompt, plan, navigate])
+  const previewUrl = projectId ? apiClient.getPreviewUrl(projectId) : null
 
   return (
-    <div className="h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-semibold text-foreground">Mixable</h1>
-            {!isComplete && (
-              <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium">
-                Building...
-              </span>
-            )}
-            {isComplete && (
-              <span className="text-xs px-2 py-1 bg-green-500/10 text-green-600 rounded-full font-medium">
-                ✓ Complete
-              </span>
-            )}
+    <div className="h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50 flex">
+      {/* Left Sidebar - Chat */}
+      <div className="w-[30%] border-r border-slate-800 flex flex-col">
+        {/* Header */}
+        <div className="border-b border-slate-800 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-sm font-medium text-slate-400">
+              {status === 'connecting' && 'Connecting...'}
+              {status === 'connected' && 'Live'}
+              {status === 'disconnected' && 'Disconnected'}
+              {status === 'error' && 'Error'}
+            </span>
           </div>
-          {isComplete && (
-            <Button onClick={() => navigate({ to: '/' })} variant="outline" size="sm">
-              New Project
-            </Button>
+          <h1 className="text-xl font-semibold text-slate-200">Building your app</h1>
+          <p className="text-sm text-slate-400 mt-1 truncate">{prompt}</p>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {/* Initial user message */}
+          <div className="flex gap-3 animate-slideInFromLeft">
+            <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 text-cyan-400" />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-medium text-slate-300 mb-1">You</div>
+              <div className="text-sm text-slate-400">{prompt}</div>
+            </div>
+          </div>
+
+          {/* SSE Messages */}
+          {messages.map((message, index) => (
+            <ChatMessage key={index} message={message} />
+          ))}
+
+          {/* Connection Error */}
+          {error && (
+            <div className="flex gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div className="text-sm text-red-300">{error}</div>
+            </div>
           )}
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Chat Messages (30%) */}
-        <div className="w-[30%] flex flex-col border-r border-border">
-          <div className="flex-1 overflow-y-auto p-5 space-y-4">
-            {messages.map((message, index) => (
-              <div key={index} className="message-enter">
-                <div className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {message.type === 'assistant' && (
-                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="w-4 h-4 text-primary-foreground" />
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                      message.type === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-foreground'
-                    }`}
-                  >
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                  </div>
-                  {message.type === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                      <User className="w-4 h-4 text-secondary-foreground" />
-                    </div>
-                  )}
+          {/* Loading indicator when no messages */}
+          {messages.length === 0 && status === 'connected' && (
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                <Code2 className="w-4 h-4 text-cyan-400" />
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-slate-300 mb-1">Nova</div>
+                <div className="flex items-center gap-2 text-sm text-slate-400">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Initializing...
                 </div>
               </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
+            </div>
+          )}
 
-          {/* Chat Input */}
-          <div className="p-4 border-t border-border">
-            <div className="flex gap-2 items-end">
-              <Textarea
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Send a message..."
-                disabled={!isComplete}
-              />
-              <Button
-                size="icon"
-                disabled={!chatInput.trim() || !isComplete}
-                className="rounded-full flex-shrink-0"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-slate-800 p-4">
+          <div className="text-xs text-slate-500 text-center">
+            Project ID: {projectId}
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel - Preview */}
+      <div className="flex-1 flex flex-col">
+        {/* Preview Header */}
+        <div className="border-b border-slate-800 p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-200">Live Preview</h2>
+            <div className="flex items-center gap-2">
+              {previewUrl && (
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-cyan-400 hover:text-cyan-300"
+                >
+                  Open in new tab →
+                </a>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right Panel - Loading State / Preview (70%) */}
-        <div className="w-[70%] bg-muted/30 flex flex-col">
-          {!isComplete ? (
-            <div className="flex-1 flex items-center justify-center p-8">
-              <div className="text-center space-y-6">
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                    <Loader2 className="w-10 h-10 text-primary animate-spin" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-foreground">Building your app</h3>
-                  <p className="text-sm text-muted-foreground">This won't take long...</p>
-                </div>
-                <div className="space-y-3 mt-8">
-                  <div className="flex items-center gap-3 text-muted-foreground text-sm">
-                    <Code2 className="w-4 h-4" />
-                    <span>Generating components</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-muted-foreground text-sm">
-                    <Layers className="w-4 h-4" />
-                    <span>Setting up architecture</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-primary text-sm font-medium">
-                    <FileCode2 className="w-4 h-4" />
-                    <span>No loops detected ✓</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Preview Iframe */}
+        <div className="flex-1 bg-slate-900 relative">
+          {previewUrl ? (
+            <iframe
+              src={previewUrl}
+              className="w-full h-full border-0"
+              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+              title="App Preview"
+            />
           ) : (
-            <div className="flex-1 flex flex-col">
-              {/* Preview Header */}
-              <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-lg">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="text-xs font-medium text-muted-foreground">Live Preview</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">localhost:3001</span>
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mx-auto">
+                  <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm">
-                    <Zap className="w-3 h-3 mr-1.5" />
-                    Deploy
-                  </Button>
+                <div className="text-slate-400">
+                  Building your application...
                 </div>
-              </div>
-
-              {/* Preview iframe */}
-              <div className="flex-1 bg-white">
-                <iframe
-                  src="http://localhost:3001"
-                  className="w-full h-full border-0"
-                  title="App Preview"
-                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                />
+                <div className="text-sm text-slate-500">
+                  Preview will appear here once ready
+                </div>
               </div>
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ChatMessage({ message }: { message: SSEMessage }) {
+  const getIcon = () => {
+    switch (message.type) {
+      case 'user':
+        return <User className="w-4 h-4 text-cyan-400" />
+      case 'assistant':
+        return <Code2 className="w-4 h-4 text-cyan-400" />
+      case 'system':
+        return <Sparkles className="w-4 h-4 text-cyan-400" />
+      case 'error':
+        return <AlertCircle className="w-4 h-4 text-red-400" />
+      default:
+        return <Code2 className="w-4 h-4 text-cyan-400" />
+    }
+  }
+
+  const getLabel = () => {
+    switch (message.type) {
+      case 'user':
+        return 'You'
+      case 'assistant':
+        return 'Nova'
+      case 'system':
+        return 'System'
+      case 'error':
+        return 'Error'
+      default:
+        return 'Nova'
+    }
+  }
+
+  const getBgColor = () => {
+    switch (message.type) {
+      case 'error':
+        return 'bg-red-500/10 border-red-500/20'
+      case 'system':
+        return 'bg-cyan-500/10 border-cyan-500/20'
+      default:
+        return 'bg-slate-800'
+    }
+  }
+
+  return (
+    <div className="flex gap-3 animate-slideInFromLeft">
+      <div className={`w-8 h-8 rounded-full ${getBgColor()} flex items-center justify-center flex-shrink-0`}>
+        {getIcon()}
+      </div>
+      <div className="flex-1">
+        <div className="text-sm font-medium text-slate-300 mb-1">{getLabel()}</div>
+        <div className={`text-sm ${message.type === 'error' ? 'text-red-300' : 'text-slate-400'}`}>
+          {message.content}
         </div>
       </div>
     </div>

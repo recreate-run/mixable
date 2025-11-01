@@ -1,5 +1,5 @@
 {
-  "name": "mixable",
+  "name": "nova-frontend",
   "private": true,
   "type": "module",
   "scripts": {
