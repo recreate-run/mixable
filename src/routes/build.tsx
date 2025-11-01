@@ -131,7 +131,7 @@ function BuildPage() {
 
         {/* Preview Iframe */}
         <div className="flex-1 bg-muted/30 relative">
-          {previewUrl ? (
+          {previewUrl && (
             <iframe
               ref={iframeRef}
               src={previewUrl}
@@ -139,8 +139,11 @@ function BuildPage() {
               sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
               title="App Preview"
             />
-          ) : (
-            <div className="flex items-center justify-center h-full">
+          )}
+
+          {/* Loading overlay - shown until preview is ready */}
+          {!isPreviewReady && (
+            <div className="absolute inset-0 bg-background flex items-center justify-center z-10">
               <div className="text-center space-y-5">
                 <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
                   <Loader2 className="w-8 h-8 text-primary animate-spin" />
