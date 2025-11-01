@@ -86,12 +86,34 @@ export function useSSE(projectId: string | null): UseSSEResult {
       // Handle 'claude_message' event
       eventSource.addEventListener('claude_message', (e: MessageEvent) => {
         const data = JSON.parse(e.data);
-        addMessageInternal({
-          type: 'assistant',
-          content: data.content,
-          timestamp: Date.now(),
-          data,
-        });
+
+        // Extract content based on Claude SDK message type
+        let content = '';
+
+        if (data.type === 'text') {
+          // Text delta messages from Claude
+          content = data.text || '';
+        } else if (data.type === 'tool_use') {
+          // Tool use messages
+          content = `Using tool: ${data.name}`;
+        } else if (data.type === 'result') {
+          // Result messages
+          if (data.subtype === 'success') {
+            content = 'Task completed successfully';
+          } else if (data.subtype === 'error') {
+            content = `Error: ${data.error || 'Unknown error'}`;
+          }
+        }
+
+        // Only add message if there's actual content
+        if (content) {
+          addMessageInternal({
+            type: 'assistant',
+            content,
+            timestamp: Date.now(),
+            data,
+          });
+        }
       });
 
       // Handle 'file_added' event
