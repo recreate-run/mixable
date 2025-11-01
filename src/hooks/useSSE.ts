@@ -25,6 +25,7 @@ export interface UseSSEResult {
   messages: SSEMessage[];
   status: ConnectionStatus;
   error: string | null;
+  isPreviewReady: boolean;
   addMessage: (message: SSEMessage) => void;
   clearMessages: () => void;
 }
@@ -33,6 +34,7 @@ export function useSSE(projectId: string | null): UseSSEResult {
   const [messages, setMessages] = useState<SSEMessage[]>([]);
   const [status, setStatus] = useState<ConnectionStatus>('connecting');
   const [error, setError] = useState<string | null>(null);
+  const [isPreviewReady, setIsPreviewReady] = useState<boolean>(false);
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
@@ -125,9 +127,22 @@ export function useSSE(projectId: string | null): UseSSEResult {
         });
       });
 
+      // Handle 'dev_server_ready' event
+      eventSource.addEventListener('dev_server_ready', (e: MessageEvent) => {
+        const data = JSON.parse(e.data);
+        setIsPreviewReady(true);
+        addMessageInternal({
+          type: 'system',
+          content: data.message || 'Development server is running!',
+          timestamp: Date.now(),
+          data,
+        });
+      });
+
       // Handle 'preview_ready' event
       eventSource.addEventListener('preview_ready', (e: MessageEvent) => {
         const data = JSON.parse(e.data);
+        setIsPreviewReady(true);
         addMessageInternal({
           type: 'system',
           content: data.message || 'Preview is ready!',
@@ -176,6 +191,7 @@ export function useSSE(projectId: string | null): UseSSEResult {
     messages,
     status,
     error,
+    isPreviewReady,
     addMessage,
     clearMessages,
   };

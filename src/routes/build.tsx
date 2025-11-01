@@ -16,13 +16,23 @@ export const Route = createFileRoute('/build')({
 
 function BuildPage() {
   const { projectId, prompt } = Route.useSearch()
-  const { messages, status, error } = useSSE(projectId)
+  const { messages, status, error, isPreviewReady } = useSSE(projectId)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Reload iframe when preview becomes ready
+  useEffect(() => {
+    if (isPreviewReady && iframeRef.current) {
+      // Reload the iframe by setting its src
+      const currentSrc = iframeRef.current.src
+      iframeRef.current.src = currentSrc
+    }
+  }, [isPreviewReady])
 
   const previewUrl = projectId ? apiClient.getPreviewUrl(projectId) : null
 
@@ -123,6 +133,7 @@ function BuildPage() {
         <div className="flex-1 bg-muted/30 relative">
           {previewUrl ? (
             <iframe
+              ref={iframeRef}
               src={previewUrl}
               className="w-full h-full border-0"
               sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
