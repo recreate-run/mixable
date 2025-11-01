@@ -53,40 +53,41 @@ function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-medium mb-4">
-            <Sparkles className="w-4 h-4" />
-            <span>AI-Powered Application Builder</span>
+      <section className="container mx-auto px-6 py-24 md:py-32">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center space-y-8 mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-sm font-medium">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>AI-Powered Application Builder</span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent">
+              Build Apps with AI
+            </h1>
+
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Describe your app in plain English and watch as Nova generates a fully functional application in minutes.
+            </p>
           </div>
 
-          <h1 className="text-6xl font-bold tracking-tight bg-gradient-to-r from-slate-50 via-cyan-400 to-slate-50 bg-clip-text text-transparent">
-            Build Apps with AI
-          </h1>
-
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Describe your app in plain English and watch as Nova generates a fully functional application in minutes.
-          </p>
-
           {/* Input Section */}
-          <div className="mt-12 max-w-3xl mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
+          <div className="max-w-3xl mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="relative group">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Describe the app you want to build... (e.g., 'Build a todo app with user authentication and priority sorting')"
-                  className="min-h-[120px] resize-none bg-slate-900/50 border-slate-700 focus:border-cyan-500 text-slate-50 placeholder:text-slate-500"
+                  className="min-h-[140px] pr-40"
                   disabled={isSubmitting}
                 />
-                <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                <div className="absolute bottom-4 right-4 flex items-center gap-1.5">
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:text-slate-300"
+                    size="icon"
                     disabled={isSubmitting}
                   >
                     <Paperclip className="w-4 h-4" />
@@ -94,8 +95,7 @@ function LandingPage() {
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:text-slate-300"
+                    size="icon"
                     disabled={isSubmitting}
                   >
                     <Globe className="w-4 h-4" />
@@ -103,8 +103,7 @@ function LandingPage() {
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:text-slate-300"
+                    size="icon"
                     disabled={isSubmitting}
                   >
                     <AudioWaveform className="w-4 h-4" />
@@ -113,38 +112,34 @@ function LandingPage() {
               </div>
 
               {error && (
-                <div className="text-red-400 text-sm text-left">
+                <div className="text-destructive text-sm px-1">
                   {error}
                 </div>
               )}
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:text-slate-300"
-                    disabled={isSubmitting}
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add context
-                  </Button>
-                </div>
+              <div className="flex items-center justify-between gap-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={isSubmitting}
+                >
+                  <Plus className="w-4 h-4" />
+                  Add context
+                </Button>
                 <Button
                   type="submit"
                   size="lg"
-                  className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-medium"
                   disabled={isSubmitting || !input.trim()}
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-slate-950 border-t-transparent mr-2" />
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
                       Starting build...
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 mr-2" />
+                      <Send className="w-4 h-4" />
                       Start Building
                     </>
                   )}
@@ -154,17 +149,17 @@ function LandingPage() {
           </div>
 
           {/* Feature Pills */}
-          <div className="mt-12 flex flex-wrap justify-center gap-3">
-            <div className="px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 text-sm text-slate-300">
-              <Zap className="w-4 h-4 inline mr-1 text-cyan-400" />
+          <div className="mt-14 flex flex-wrap justify-center gap-2.5">
+            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-muted/50 border border-border text-sm text-muted-foreground">
+              <Zap className="w-3.5 h-3.5 text-primary" />
               Real-time Code Generation
             </div>
-            <div className="px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 text-sm text-slate-300">
-              <Sparkles className="w-4 h-4 inline mr-1 text-cyan-400" />
+            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-muted/50 border border-border text-sm text-muted-foreground">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
               AI-Powered Development
             </div>
-            <div className="px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 text-sm text-slate-300">
-              <ArrowUp className="w-4 h-4 inline mr-1 text-cyan-400" />
+            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-muted/50 border border-border text-sm text-muted-foreground">
+              <ArrowUp className="w-3.5 h-3.5 text-primary" />
               Instant Preview
             </div>
           </div>
@@ -172,9 +167,9 @@ function LandingPage() {
       </section>
 
       {/* Examples Section */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-semibold text-center mb-8 text-slate-200">
+      <section className="container mx-auto px-6 pb-24">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10 text-foreground">
             Try these examples
           </h2>
           <div className="grid md:grid-cols-3 gap-4">
@@ -198,11 +193,11 @@ function LandingPage() {
               <button
                 key={i}
                 onClick={() => setInput(example.prompt)}
-                className="text-left p-4 rounded-lg bg-slate-800/30 border border-slate-700 hover:border-cyan-500/50 hover:bg-slate-800/50 transition-all"
+                className="group text-left p-5 rounded-xl bg-card border border-border hover:border-primary/40 hover:shadow-sm transition-all duration-200"
                 disabled={isSubmitting}
               >
-                <h3 className="font-medium text-slate-200 mb-1">{example.title}</h3>
-                <p className="text-sm text-slate-400">{example.description}</p>
+                <h3 className="font-semibold text-card-foreground mb-2 group-hover:text-primary transition-colors">{example.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{example.description}</p>
               </button>
             ))}
           </div>

@@ -27,34 +27,34 @@ function BuildPage() {
   const previewUrl = projectId ? apiClient.getPreviewUrl(projectId) : null
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50 flex">
+    <div className="h-screen bg-background text-foreground flex">
       {/* Left Sidebar - Chat */}
-      <div className="w-[30%] border-r border-slate-800 flex flex-col">
+      <div className="w-[32%] border-r border-border flex flex-col bg-card">
         {/* Header */}
-        <div className="border-b border-slate-800 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-sm font-medium text-slate-400">
+        <div className="border-b border-border p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-sm font-medium text-muted-foreground">
               {status === 'connecting' && 'Connecting...'}
               {status === 'connected' && 'Live'}
               {status === 'disconnected' && 'Disconnected'}
               {status === 'error' && 'Error'}
             </span>
           </div>
-          <h1 className="text-xl font-semibold text-slate-200">Building your app</h1>
-          <p className="text-sm text-slate-400 mt-1 truncate">{prompt}</p>
+          <h1 className="text-xl font-semibold text-card-foreground">Building your app</h1>
+          <p className="text-sm text-muted-foreground mt-1.5 truncate">{prompt}</p>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-5">
           {/* Initial user message */}
-          <div className="flex gap-3 animate-slideInFromLeft">
-            <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-              <User className="w-4 h-4 text-cyan-400" />
+          <div className="flex gap-3.5 message-enter">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 text-primary" />
             </div>
-            <div className="flex-1">
-              <div className="text-sm font-medium text-slate-300 mb-1">You</div>
-              <div className="text-sm text-slate-400">{prompt}</div>
+            <div className="flex-1 space-y-1">
+              <div className="text-sm font-medium text-card-foreground">You</div>
+              <div className="text-sm text-muted-foreground leading-relaxed">{prompt}</div>
             </div>
           </div>
 
@@ -65,21 +65,21 @@ function BuildPage() {
 
           {/* Connection Error */}
           {error && (
-            <div className="flex gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-              <div className="text-sm text-red-300">{error}</div>
+            <div className="flex gap-3.5 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+              <div className="text-sm text-destructive">{error}</div>
             </div>
           )}
 
           {/* Loading indicator when no messages */}
           {messages.length === 0 && status === 'connected' && (
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
-                <Code2 className="w-4 h-4 text-cyan-400" />
+            <div className="flex gap-3.5">
+              <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                <Code2 className="w-4 h-4 text-primary" />
               </div>
-              <div className="flex-1">
-                <div className="text-sm font-medium text-slate-300 mb-1">Nova</div>
-                <div className="flex items-center gap-2 text-sm text-slate-400">
+              <div className="flex-1 space-y-1">
+                <div className="text-sm font-medium text-card-foreground">Nova</div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Initializing...
                 </div>
@@ -91,8 +91,8 @@ function BuildPage() {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-800 p-4">
-          <div className="text-xs text-slate-500 text-center">
+        <div className="border-t border-border p-4">
+          <div className="text-xs text-muted-foreground text-center">
             Project ID: {projectId}
           </div>
         </div>
@@ -101,16 +101,16 @@ function BuildPage() {
       {/* Right Panel - Preview */}
       <div className="flex-1 flex flex-col">
         {/* Preview Header */}
-        <div className="border-b border-slate-800 p-4">
+        <div className="border-b border-border p-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-200">Live Preview</h2>
+            <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
             <div className="flex items-center gap-2">
               {previewUrl && (
                 <a
                   href={previewUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-cyan-400 hover:text-cyan-300"
+                  className="text-sm text-primary hover:text-primary/80 transition-colors"
                 >
                   Open in new tab →
                 </a>
@@ -120,7 +120,7 @@ function BuildPage() {
         </div>
 
         {/* Preview Iframe */}
-        <div className="flex-1 bg-slate-900 relative">
+        <div className="flex-1 bg-muted/30 relative">
           {previewUrl ? (
             <iframe
               src={previewUrl}
@@ -130,14 +130,14 @@ function BuildPage() {
             />
           ) : (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mx-auto">
-                  <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+              <div className="text-center space-y-5">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
+                  <Loader2 className="w-8 h-8 text-primary animate-spin" />
                 </div>
-                <div className="text-slate-400">
+                <div className="text-foreground font-medium">
                   Building your application...
                 </div>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-muted-foreground">
                   Preview will appear here once ready
                 </div>
               </div>
@@ -153,15 +153,15 @@ function ChatMessage({ message }: { message: SSEMessage }) {
   const getIcon = () => {
     switch (message.type) {
       case 'user':
-        return <User className="w-4 h-4 text-cyan-400" />
+        return <User className="w-4 h-4 text-primary" />
       case 'assistant':
-        return <Code2 className="w-4 h-4 text-cyan-400" />
+        return <Code2 className="w-4 h-4 text-primary" />
       case 'system':
-        return <Sparkles className="w-4 h-4 text-cyan-400" />
+        return <Sparkles className="w-4 h-4 text-primary" />
       case 'error':
-        return <AlertCircle className="w-4 h-4 text-red-400" />
+        return <AlertCircle className="w-4 h-4 text-destructive" />
       default:
-        return <Code2 className="w-4 h-4 text-cyan-400" />
+        return <Code2 className="w-4 h-4 text-primary" />
     }
   }
 
@@ -183,22 +183,22 @@ function ChatMessage({ message }: { message: SSEMessage }) {
   const getBgColor = () => {
     switch (message.type) {
       case 'error':
-        return 'bg-red-500/10 border-red-500/20'
+        return 'bg-destructive/10'
       case 'system':
-        return 'bg-cyan-500/10 border-cyan-500/20'
+        return 'bg-primary/5'
       default:
-        return 'bg-slate-800'
+        return 'bg-muted'
     }
   }
 
   return (
-    <div className="flex gap-3 animate-slideInFromLeft">
+    <div className="flex gap-3.5 message-enter">
       <div className={`w-8 h-8 rounded-full ${getBgColor()} flex items-center justify-center flex-shrink-0`}>
         {getIcon()}
       </div>
-      <div className="flex-1">
-        <div className="text-sm font-medium text-slate-300 mb-1">{getLabel()}</div>
-        <div className={`text-sm ${message.type === 'error' ? 'text-red-300' : 'text-slate-400'}`}>
+      <div className="flex-1 space-y-1">
+        <div className="text-sm font-medium text-card-foreground">{getLabel()}</div>
+        <div className={`text-sm leading-relaxed ${message.type === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}>
           {message.content}
         </div>
       </div>

@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
-import { Zap, CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2 } from 'lucide-react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 export const Route = createFileRoute('/waitlist')({ component: WaitlistPage })
@@ -58,24 +58,24 @@ function WaitlistPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6 md:p-12">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div className="w-full max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-20 lg:gap-28 items-center">
           {/* Left Column - Form */}
-          <div className="order-2 lg:order-1 space-y-8">
+          <div className="order-2 lg:order-1 space-y-10">
             {/* Branding */}
-            <div className="space-y-3">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary to-primary/60 bg-clip-text text-transparent tracking-tight">Nova</h1>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary to-primary/50 bg-clip-text text-transparent tracking-tight">Nova</h1>
+              <p className="text-sm text-muted-foreground">
                 Powered by Mix • AI-Native Apps
               </p>
             </div>
 
             {/* Success State */}
             {isSuccess && (
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 p-8 bg-primary/5 rounded-2xl border border-primary/20">
+              <div className="fade-in">
+                <div className="flex items-start gap-4 p-7 bg-primary/5 rounded-xl border border-primary/15">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     <h3 className="text-xl font-semibold text-foreground">
                       You're on the list
                     </h3>
@@ -89,32 +89,32 @@ function WaitlistPage() {
 
             {/* Form */}
             {!isSuccess && (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-4">
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
                       disabled={isSubmitting}
-                      className="h-14 text-base bg-card border-border"
+                      className="h-12 text-base"
                       autoFocus
                     />
                     {error && (
-                      <p className="text-sm text-destructive">{error}</p>
+                      <p className="text-sm text-destructive px-0.5">{error}</p>
                     )}
                   </div>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting || !email.trim()}
-                    className="w-full h-14 text-base"
+                    className="w-full h-12 text-base"
                     size="lg"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin" />
                         Joining
                       </>
                     ) : (
@@ -127,8 +127,8 @@ function WaitlistPage() {
 
             {/* Features */}
             {!isSuccess && (
-              <div className="space-y-4 pt-4">
-                <div className="space-y-3">
+              <div className="space-y-4 pt-2">
+                <div className="space-y-3.5">
                   <div className="flex items-start gap-3">
                     <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground leading-relaxed">
@@ -153,12 +153,12 @@ function WaitlistPage() {
           </div>
 
           {/* Right Column - Hero */}
-          <div className="order-1 lg:order-2 space-y-8">
-            <div className="space-y-6">
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight leading-[1.1]">
+          <div className="order-1 lg:order-2">
+            <div className="space-y-7">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight leading-[1.08]">
                 Build AI-Native Apps
                 <br />
-                <span className="text-primary">From a Prompt</span>
+                <span className="bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">From a Prompt</span>
               </h2>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
                 Launch your AI startup without code. Mix-powered apps with multimodal capabilities, ready in minutes.
